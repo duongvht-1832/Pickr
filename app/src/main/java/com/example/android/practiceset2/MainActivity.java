@@ -4,32 +4,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import org.apache.poi.ss.usermodel.Workbook;
-
 import android.content.res.AssetManager;
 import android.util.Log;
 
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,10 +28,13 @@ public class MainActivity extends AppCompatActivity {
     TextView translation;
     TextView hint;
     TextView id;
+    TextView totalNumberOfCards;
     Button btnLoadFile;
     Button btnGetNewCollection;
     Button btnNextWord;
     Switch switchShowJA;
+    Switch switchShowTranslation;
+    Switch switchShowHint;
     Spinner spinner;
 
     private ArrayList<Record> fullList = new ArrayList<Record>();
@@ -72,11 +66,15 @@ public class MainActivity extends AppCompatActivity {
         translation = findViewById(R.id.translation);
         hint = findViewById(R.id.hint);
         id = findViewById(R.id.id);
+        totalNumberOfCards = findViewById(R.id.totalNumberOfCards);
         btnLoadFile = findViewById(R.id.loadFile);
         btnGetNewCollection = findViewById(R.id.getNewCollection);
         btnNextWord = findViewById(R.id.nextWord);
         switchShowJA = findViewById(R.id.showJAswitch);
-        spinner = findViewById(R.id.sort_by_spinner);
+        switchShowTranslation = findViewById(R.id.showTranslationSwitch);
+        switchShowHint = findViewById(R.id.showHintSwitch);
+
+//        spinner = findViewById(R.id.sort_by_spinner);
 
 
         btnLoadFile.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +108,24 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (currentRecord != null){
                     jaSentence.setText((switchShowJA.isChecked()) ? currentRecord.getJaSentence() : "");
+                }
+            }
+        });
+
+        switchShowTranslation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentRecord != null){
+                    translation.setText((switchShowTranslation.isChecked()) ? currentRecord.getTranslation() : "");
+                }
+            }
+        });
+
+        switchShowHint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentRecord != null){
+                    hint.setText((switchShowHint.isChecked()) ? currentRecord.getHint() : "");
                 }
             }
         });
@@ -148,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
             }
             getNewCollection();
             goToNextWord();
+            totalNumberOfCards.setText(fullList.size());
         } catch (Exception e) {
             Log.e("aaa", "error " + e.toString());
         }
@@ -164,9 +181,9 @@ public class MainActivity extends AppCompatActivity {
     public void goToNextWord() {
         currentRecord = shortList.get((int) (Math.random() * shortList.size()));
         jaSentence.setText((switchShowJA.isChecked()) ? currentRecord.getJaSentence() : "");
-        translation.setText(currentRecord.getTranslation());
-        hint.setText(currentRecord.getHint());
-        id.setText("Sentence ID: " + currentRecord.getID());
+        translation.setText((switchShowTranslation.isChecked()) ? currentRecord.getTranslation() : "");
+        hint.setText((switchShowHint.isChecked()) ? currentRecord.getHint() : "");
+        id.setText(currentRecord.getID());
     }
 
 

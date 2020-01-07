@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">PracticeSet2</string>
+    <string name="app_name">Pickr</string>
+    <string name="ja_sentence">Japanese Sentence</string>
+    <string name="translation">Translation</string>
+    <string name="hint">Hint</string>
+    <string name="load_file">Load File</string>
+    <string name="get_new_collection">Get new collection</string>
+    <string name="next_sentence">Next</string>
+    <string name="sentence_id_label">Sentence ID:</string>
+    <string name="number_of_cards">"Total number of cards: "</string>
 </resources>
