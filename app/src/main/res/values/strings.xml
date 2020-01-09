@@ -8,4 +8,9 @@
     <string name="next_sentence">Next</string>
     <string name="sentence_id_label">Sentence ID:</string>
     <string name="number_of_cards">"Total number of cards: "</string>
+    <string name="welcome_message">Welcome back to Pickr! What would you like to do?</string>
+    <string name="daily_training">Go to daily training session</string>
+    <string name="browse_all_records">Browse all records</string>
+    <string name="user_name">Vu Hoang Thai Duong</string>
+    <string name="follow_us">Follow us:</string>
 </resources>
