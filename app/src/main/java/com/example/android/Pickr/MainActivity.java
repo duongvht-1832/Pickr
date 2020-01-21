@@ -1,4 +1,4 @@
-package com.example.android.practiceset2;
+package com.example.android.Pickr;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goToBrowseAllRecords (View view) {
-        Intent intent = new Intent(this, BrowseAllRecords.class);
+        Intent intent = new Intent(this, BrowseAllSentences.class);
         startActivity(intent);
     }
 

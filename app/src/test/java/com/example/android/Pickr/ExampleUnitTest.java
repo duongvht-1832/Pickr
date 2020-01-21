@@ -1,4 +1,4 @@
-package com.example.android.practiceset2;
+package com.example.android.Pickr;
 
 import org.junit.Test;
 

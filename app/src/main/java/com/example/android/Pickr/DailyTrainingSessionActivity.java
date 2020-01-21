@@ -1,4 +1,4 @@
-package com.example.android.practiceset2;
+package com.example.android.Pickr;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,7 +20,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class DailyTrainingSessionActivity extends AppCompatActivity {
 
@@ -37,9 +36,10 @@ public class DailyTrainingSessionActivity extends AppCompatActivity {
     Switch switchShowHint;
     Spinner spinner;
 
-    private ArrayList<Record> fullList = new ArrayList<Record>();
-    private ArrayList<Record> shortList;
-    private Record currentRecord;
+    //    private ArrayList<Sentence> fullList = new ArrayList<Sentence>();
+    public final SentenceRoomDatabase appDb = SentenceRoomDatabase.getInstance(this);
+    private ArrayList<Sentence> shortList;
+    private Sentence currentSentence;
 
 
     static {
@@ -74,18 +74,27 @@ public class DailyTrainingSessionActivity extends AppCompatActivity {
         switchShowTranslation = findViewById(R.id.showTranslationSwitch);
         switchShowHint = findViewById(R.id.showHintSwitch);
 
-
-        btnLoadFile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                readExcelFileFromAssets();
-                totalNumberOfCards.setText(fullList.size() + "");
-//                goToNextWord();
-                btnLoadFile.setEnabled(false);
-                btnGetNewCollection.setEnabled(true);
-                btnNextWord.setEnabled(true);
-            }
-        });
+        if (appDb.sentenceDao().getAllSentences().isEmpty()) {
+            btnLoadFile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    readExcelFileFromAssets();
+                    totalNumberOfCards.setText(appDb.sentenceDao().getAllSentences().size() + "");
+                    btnLoadFile.setEnabled(false);
+                    btnGetNewCollection.setEnabled(true);
+                    btnNextWord.setEnabled(true);
+                }
+            });
+        } else {
+            btnLoadFile.setText("Refresh");
+            btnLoadFile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    readExcelFileFromAssets();
+                    totalNumberOfCards.setText(appDb.sentenceDao().getAllSentences().size() + "");
+                }
+            });
+        }
 
         btnGetNewCollection.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,8 +114,8 @@ public class DailyTrainingSessionActivity extends AppCompatActivity {
         switchShowJA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentRecord != null){
-                    jaSentence.setText((switchShowJA.isChecked()) ? currentRecord.getJaSentence() : "");
+                if (currentSentence != null) {
+                    jaSentence.setText((switchShowJA.isChecked()) ? currentSentence.getJaSentence() : "");
                 }
             }
         });
@@ -114,8 +123,8 @@ public class DailyTrainingSessionActivity extends AppCompatActivity {
         switchShowTranslation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentRecord != null){
-                    translation.setText((switchShowTranslation.isChecked()) ? currentRecord.getTranslation() : "");
+                if (currentSentence != null) {
+                    translation.setText((switchShowTranslation.isChecked()) ? currentSentence.getTranslation() : "");
                 }
             }
         });
@@ -123,8 +132,8 @@ public class DailyTrainingSessionActivity extends AppCompatActivity {
         switchShowHint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentRecord != null){
-                    hint.setText((switchShowHint.isChecked()) ? currentRecord.getHint() : "");
+                if (currentSentence != null) {
+                    hint.setText((switchShowHint.isChecked()) ? currentSentence.getHint() : "");
                 }
             }
         });
@@ -154,11 +163,12 @@ public class DailyTrainingSessionActivity extends AppCompatActivity {
             int rowCount = 1;
             XSSFRow row = sheet.getRow(rowCount);
             while (!row.getCell(1).getStringCellValue().isEmpty()) {
-                int id = (int)row.getCell(0).getNumericCellValue();
+                String id = row.getCell(0).getNumericCellValue() + "";
                 String jaSentence = row.getCell(1).getStringCellValue();
                 String translation = row.getCell(2).getStringCellValue();
                 String hint = row.getCell(3).getStringCellValue();
-                fullList.add(new Record(id + "", jaSentence, translation, hint));
+//                fullList.add(new Sentence(id + "", jaSentence, translation, hint));
+                appDb.sentenceDao().insertSentence(new Sentence(id, jaSentence, translation, hint));
                 row = sheet.getRow(++rowCount);
             }
             getNewCollection();
@@ -169,19 +179,19 @@ public class DailyTrainingSessionActivity extends AppCompatActivity {
     }
 
     public void getNewCollection() {
-        Collections.shuffle(fullList);
-        shortList = new ArrayList<Record>();
+        int appDbSize = appDb.sentenceDao().getAllSentences().size();
+        shortList = new ArrayList<Sentence>();
         for (int i = 0; i < 20; i++) {
-            shortList.add(fullList.get(i));
+            shortList.add(appDb.sentenceDao().findSentenceById(appDbSize * Math.random() + ""));
         }
     }
 
     public void goToNextWord() {
-        currentRecord = shortList.get((int) (Math.random() * shortList.size()));
-        jaSentence.setText((switchShowJA.isChecked()) ? currentRecord.getJaSentence() : "");
-        translation.setText((switchShowTranslation.isChecked()) ? currentRecord.getTranslation() : "");
-        hint.setText((switchShowHint.isChecked()) ? currentRecord.getHint() : "");
-        id.setText(currentRecord.getID());
+        currentSentence = shortList.get((int) (Math.random() * shortList.size()));
+        jaSentence.setText((switchShowJA.isChecked()) ? currentSentence.getJaSentence() : "");
+        translation.setText((switchShowTranslation.isChecked()) ? currentSentence.getTranslation() : "");
+        hint.setText((switchShowHint.isChecked()) ? currentSentence.getHint() : "");
+        id.setText(currentSentence.getSid());
     }
 
 
