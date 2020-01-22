@@ -13,23 +13,23 @@ public class NewSentenceActivity extends AppCompatActivity {
 
     public static final String EXTRA_REPLY = "com.example.android.sentencelistsql.REPLY";
 
-    private EditText mEditSentenceView;
+    private EditText mEditJapaneseSentenceView;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_sentence);
-        mEditSentenceView = findViewById(R.id.edit_sentence);
+        mEditJapaneseSentenceView = findViewById(R.id.edit_japanese_sentence);
 
         final Button button = findViewById(R.id.button_save);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent replyIntent = new Intent();
-                if (TextUtils.isEmpty(mEditSentenceView.getText())) {
+                if (TextUtils.isEmpty(mEditJapaneseSentenceView.getText())) {
                     setResult(RESULT_CANCELED, replyIntent);
                 } else {
-                    String sentence = mEditSentenceView.getText().toString();
+                    String sentence = mEditJapaneseSentenceView.getText().toString();
                     replyIntent.putExtra(EXTRA_REPLY, sentence);
                     setResult(RESULT_OK, replyIntent);
                 }

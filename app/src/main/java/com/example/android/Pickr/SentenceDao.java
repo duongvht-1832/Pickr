@@ -14,7 +14,7 @@ import java.util.List;
 public interface SentenceDao {
     @Query("SELECT * FROM sentence")
     LiveData<List<Sentence>> getAllSentences();
-    @Query("SELECT * FROM sentence WHERE sid=:id")
+    @Query("SELECT * FROM sentence WHERE id=:id")
     Sentence findSentenceById(String id);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertSentence(Sentence sentence);

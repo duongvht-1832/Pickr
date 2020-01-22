@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Sentence.class}, version = 1, exportSchema = false)
+@Database(entities = {Sentence.class}, version = 2, exportSchema = false)
 public abstract class SentenceRoomDatabase extends RoomDatabase {
 
     public abstract SentenceDao sentenceDao();
@@ -24,7 +24,7 @@ public abstract class SentenceRoomDatabase extends RoomDatabase {
             synchronized (SentenceRoomDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            SentenceRoomDatabase.class, "Sentence")
+                            SentenceRoomDatabase.class, "Sentence").fallbackToDestructiveMigration()
                             .build();
                 }
             }

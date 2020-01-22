@@ -2,11 +2,10 @@ package com.example.android.Pickr;
 
 import android.app.Application;
 
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
-
-import androidx.lifecycle.AndroidViewModel;
 
 public class SentenceViewModel extends AndroidViewModel {
 
@@ -23,6 +22,8 @@ public class SentenceViewModel extends AndroidViewModel {
     LiveData<List<Sentence>> getAllSentences() {
         return mAllSentences;
     }
+
+
 
     public void insert(Sentence sentence) {
         mRepository.insert(sentence);

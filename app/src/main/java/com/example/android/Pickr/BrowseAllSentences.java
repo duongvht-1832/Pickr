@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
-import java.util.Set;
 
 
 public class BrowseAllSentences extends AppCompatActivity {
@@ -27,7 +26,7 @@ public class BrowseAllSentences extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_browse_all_sentences);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         final SentenceListAdapter adapter = new SentenceListAdapter(this);
@@ -35,7 +34,7 @@ public class BrowseAllSentences extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Get a new or existing ViewModel from the ViewModelProvider.
-        mSentenceViewModel = new ViewModelProvider(this, ).get(SentenceViewModel.class);
+        mSentenceViewModel = new ViewModelProvider(this).get(SentenceViewModel.class);
 
         // Add an observer on the LiveData returned by getAlphabetizedSentences.
         // The onChanged() method fires when the observed data changes and the activity is

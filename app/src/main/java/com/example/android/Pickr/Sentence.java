@@ -10,7 +10,8 @@ import androidx.room.PrimaryKey;
 public class Sentence {
     @PrimaryKey
     @NonNull
-    private String sid;
+    @ColumnInfo(name = "id")
+    private String id;
     @ColumnInfo(name = "jaSentence")
     private String jaSentence;
     @ColumnInfo(name = "translation")
@@ -27,18 +28,18 @@ public class Sentence {
 
     @Ignore
     public Sentence(String id) {
-        this.sid = id;
+        this.id = id;
     }
 
-    public Sentence(String sid, String jaSentence, String translation, String hint) {
-        this.sid = sid;
+    public Sentence(String id, String jaSentence, String translation, String hint) {
+        this.id = id;
         this.jaSentence = jaSentence;
         this.translation = translation;
         this.hint = hint;
     }
 
-    public String getSid() {
-        return this.sid;
+    public String getId() {
+        return this.id;
     }
 
     public String getJaSentence() {
@@ -57,8 +58,8 @@ public class Sentence {
         return this.favourite;
     }
 
-    public void setSid(String sid) {
-        this.sid = sid;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setJaSentence(String jaSentence) {

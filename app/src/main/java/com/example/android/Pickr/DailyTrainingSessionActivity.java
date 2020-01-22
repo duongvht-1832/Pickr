@@ -1,25 +1,26 @@
 package com.example.android.Pickr;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import android.content.res.AssetManager;
-import android.util.Log;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DailyTrainingSessionActivity extends AppCompatActivity {
 
@@ -34,10 +35,8 @@ public class DailyTrainingSessionActivity extends AppCompatActivity {
     Switch switchShowJA;
     Switch switchShowTranslation;
     Switch switchShowHint;
-    Spinner spinner;
 
-    //    private ArrayList<Sentence> fullList = new ArrayList<Sentence>();
-    public final SentenceRoomDatabase appDb = SentenceRoomDatabase.getInstance(this);
+    private SentenceViewModel mSentenceViewModel;
     private ArrayList<Sentence> shortList;
     private Sentence currentSentence;
 
@@ -73,28 +72,27 @@ public class DailyTrainingSessionActivity extends AppCompatActivity {
         switchShowJA = findViewById(R.id.showJAswitch);
         switchShowTranslation = findViewById(R.id.showTranslationSwitch);
         switchShowHint = findViewById(R.id.showHintSwitch);
+        mSentenceViewModel = new ViewModelProvider(this).get(SentenceViewModel.class);
 
-        if (appDb.sentenceDao().getAllSentences().isEmpty()) {
-            btnLoadFile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    readExcelFileFromAssets();
-                    totalNumberOfCards.setText(appDb.sentenceDao().getAllSentences().size() + "");
-                    btnLoadFile.setEnabled(false);
-                    btnGetNewCollection.setEnabled(true);
-                    btnNextWord.setEnabled(true);
-                }
-            });
-        } else {
-            btnLoadFile.setText("Refresh");
-            btnLoadFile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    readExcelFileFromAssets();
-                    totalNumberOfCards.setText(appDb.sentenceDao().getAllSentences().size() + "");
-                }
-            });
-        }
+        mSentenceViewModel.getAllSentences().observe(this, new Observer<List<Sentence>>() {
+            @Override
+            public void onChanged(@Nullable final List<Sentence> sentences) {
+                // Update the cached copy of the sentences in the adapter.
+                totalNumberOfCards.setText((int) (mSentenceViewModel.getAllSentences().getValue().size()) + "");
+            }
+        });
+
+
+        btnLoadFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                readExcelFileFromAssets();
+                getNewCollection();
+                goToNextWord();
+                totalNumberOfCards.setText(mSentenceViewModel.getAllSentences().getValue().size() + "");
+            }
+        });
+
 
         btnGetNewCollection.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,21 +166,19 @@ public class DailyTrainingSessionActivity extends AppCompatActivity {
                 String translation = row.getCell(2).getStringCellValue();
                 String hint = row.getCell(3).getStringCellValue();
 //                fullList.add(new Sentence(id + "", jaSentence, translation, hint));
-                appDb.sentenceDao().insertSentence(new Sentence(id, jaSentence, translation, hint));
+                mSentenceViewModel.insert(new Sentence(id, jaSentence, translation, hint));
                 row = sheet.getRow(++rowCount);
             }
-            getNewCollection();
-            goToNextWord();
         } catch (Exception e) {
             Log.e("aaa", "error " + e.toString());
         }
     }
 
     public void getNewCollection() {
-        int appDbSize = appDb.sentenceDao().getAllSentences().size();
+        int appDbSize = mSentenceViewModel.getAllSentences().getValue().size();
         shortList = new ArrayList<Sentence>();
         for (int i = 0; i < 20; i++) {
-            shortList.add(appDb.sentenceDao().findSentenceById(appDbSize * Math.random() + ""));
+            shortList.add(mSentenceViewModel.getAllSentences().getValue().get((int) (appDbSize * Math.random())));
         }
     }
 
@@ -191,7 +187,7 @@ public class DailyTrainingSessionActivity extends AppCompatActivity {
         jaSentence.setText((switchShowJA.isChecked()) ? currentSentence.getJaSentence() : "");
         translation.setText((switchShowTranslation.isChecked()) ? currentSentence.getTranslation() : "");
         hint.setText((switchShowHint.isChecked()) ? currentSentence.getHint() : "");
-        id.setText(currentSentence.getSid());
+        id.setText(currentSentence.getId());
     }
 
 

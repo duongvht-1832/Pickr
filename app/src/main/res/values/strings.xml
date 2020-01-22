@@ -3,7 +3,7 @@
     <string name="ja_sentence">Japanese Sentence</string>
     <string name="translation">Translation</string>
     <string name="hint">Hint</string>
-    <string name="load_file">Load File</string>
+    <string name="refresh">Refresh</string>
     <string name="get_new_collection">Get new collection</string>
     <string name="next_sentence">Next</string>
     <string name="sentence_id_label">Sentence ID:</string>
@@ -13,7 +13,9 @@
     <string name="browse_all_records">Browse all records</string>
     <string name="user_name">Vu Hoang Thai Duong</string>
     <string name="follow_us">Follow us:</string>
-    <string name="hint_sentence">Sentence...</string>
+    <string name="hint_sentence">Enter Japanese sentence</string>
+    <string name="hint_translation">Enter translation</string>
+    <string name="hint_hint">Enter hint</string>
     <string name="button_save">Save</string>
     <string name="empty_not_saved">Word not saved because it is empty.</string>
 </resources>

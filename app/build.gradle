@@ -42,7 +42,7 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
 
 // Lifecycle components
-    def lifecycle_version = "2.1.0"
+    def lifecycle_version = "2.2.0-rc03"
 
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"

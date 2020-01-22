@@ -14,11 +14,16 @@ import java.util.List;
 public class SentenceListAdapter extends RecyclerView.Adapter<SentenceListAdapter.SentenceViewHolder> {
 
     class SentenceViewHolder extends RecyclerView.ViewHolder {
-        private final TextView sentenceItemView;
+        private final TextView japaneseSentenceItemView;
+        private final TextView translationItemView;
+        private final TextView idItemView;
+
 
         private SentenceViewHolder(View itemView) {
             super(itemView);
-            sentenceItemView = itemView.findViewById(R.id.textView);
+            japaneseSentenceItemView = itemView.findViewById(R.id.japaneseTextView);
+            translationItemView = itemView.findViewById(R.id.translationTextView);
+            idItemView = itemView.findViewById(R.id.idTextView);
         }
     }
 
@@ -39,10 +44,14 @@ public class SentenceListAdapter extends RecyclerView.Adapter<SentenceListAdapte
     public void onBindViewHolder(SentenceViewHolder holder, int position) {
         if (mSentences != null) {
             Sentence current = mSentences.get(position);
-            holder.sentenceItemView.setText(current.getJaSentence());
+            holder.japaneseSentenceItemView.setText(current.getJaSentence());
+            holder.translationItemView.setText(current.getTranslation());
+            holder.idItemView.setText(current.getId());
         } else {
             // Covers the case of data not being ready yet.
-            holder.sentenceItemView.setText("No Sentence");
+            holder.japaneseSentenceItemView.setText("No Sentence");
+            holder.translationItemView.setText("No Translation");
+            holder.idItemView.setText("No ID");
         }
     }
 
