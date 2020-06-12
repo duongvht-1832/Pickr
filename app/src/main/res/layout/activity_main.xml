@@ -28,7 +28,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:src="@drawable/beauty"
+        android:src="@drawable/flickr"
         app:civ_border_color="@android:color/white"
         app:civ_border_width="2dp"
         app:layout_constraintEnd_toEndOf="parent"

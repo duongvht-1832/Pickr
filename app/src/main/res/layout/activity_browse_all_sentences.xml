@@ -20,6 +20,7 @@ So, we are leaving the template code in. -->
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#00FFFFFF"
     tools:context=".BrowseAllSentences">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -27,6 +28,7 @@ So, we are leaving the template code in. -->
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@android:color/darker_gray"
+        android:backgroundTint="#00FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -39,7 +41,7 @@ So, we are leaving the template code in. -->
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:src="@drawable/ic_add_black_24dp"
-        app:backgroundTint="#E91E63"
+        app:backgroundTint="#009688"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

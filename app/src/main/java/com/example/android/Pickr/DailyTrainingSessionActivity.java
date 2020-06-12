@@ -86,6 +86,7 @@ public class DailyTrainingSessionActivity extends AppCompatActivity {
         btnLoadFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                mSentenceViewModel.deleteAll();
                 readExcelFileFromAssets();
                 getNewCollection();
                 goToNextWord();
@@ -105,6 +106,7 @@ public class DailyTrainingSessionActivity extends AppCompatActivity {
         btnNextWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (shortList == null) getNewCollection();
                 goToNextWord();
             }
         });
@@ -161,7 +163,8 @@ public class DailyTrainingSessionActivity extends AppCompatActivity {
             int rowCount = 1;
             XSSFRow row = sheet.getRow(rowCount);
             while (!row.getCell(1).getStringCellValue().isEmpty()) {
-                String id = row.getCell(0).getNumericCellValue() + "";
+                String id = (int)(row.getCell(0).getNumericCellValue()) + "";
+                Log.e("duong", id);
                 String jaSentence = row.getCell(1).getStringCellValue();
                 String translation = row.getCell(2).getStringCellValue();
                 String hint = row.getCell(3).getStringCellValue();

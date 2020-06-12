@@ -3,7 +3,7 @@
     <string name="ja_sentence">Japanese Sentence</string>
     <string name="translation">Translation</string>
     <string name="hint">Hint</string>
-    <string name="refresh">Refresh</string>
+    <string name="Reload">Reload</string>
     <string name="get_new_collection">Get new collection</string>
     <string name="next_sentence">Next</string>
     <string name="sentence_id_label">Sentence ID:</string>

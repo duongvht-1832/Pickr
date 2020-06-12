@@ -28,4 +28,6 @@ public class SentenceViewModel extends AndroidViewModel {
     public void insert(Sentence sentence) {
         mRepository.insert(sentence);
     }
+
+    public void deleteAllSentences() {mRepository.deleteAll();}
 }

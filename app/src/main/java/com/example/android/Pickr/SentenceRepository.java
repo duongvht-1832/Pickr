@@ -36,4 +36,10 @@ class SentenceRepository {
             mSentenceDao.insertSentence(sentence);
         });
     }
+
+    void deleteAll() {
+        SentenceRoomDatabase.databaseWriteExecutor.execute(() -> {
+            mSentenceDao.deleteAll();
+        });
+    }
 }
